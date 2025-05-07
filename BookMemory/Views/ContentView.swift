@@ -17,16 +17,21 @@ struct ContentView: View {
                 VStack {
                     ForEach(0..<50) { index in
                         Text("アイテム,\(index)")
+                            .lineLimit(3)
                             .padding()
                             .frame(maxWidth: .infinity)
                             .background(Color.gray.opacity(0.3))
-                            .cornerRadius(10)
+                            .cornerRadius(8)
+                            .shadow(radius: 3)
                             .padding(.horizontal)
                         }
-                    .padding(.bottom, 80)
+                    Spacer()
+                        .frame(height: 60)
                     }
+            }
+            HStack {
                 Button(action: {
-//                    ボタンが押された時の処理
+                    //                    ボタンが押された時の処理
                     print("ボタンが押されました")
                 }) {
                     Text("+")
