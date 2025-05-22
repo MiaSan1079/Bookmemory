@@ -5,10 +5,10 @@
 //  Created by 齋藤龍太 on 2025/05/08.
 //
 
-
 import SwiftUI
 
 struct NoteDetailView: View {
+    var note: Note
     var body: some View {
         VStack(alignment: .leading, spacing: 20) {
             Text("ノートタイトル")
@@ -24,6 +24,6 @@ struct NoteDetailView: View {
     }
 }
 
-#Preview {
-    NoteDetailView()
-}
+//#Preview {
+//    NoteDetailView(note: "")
+//}

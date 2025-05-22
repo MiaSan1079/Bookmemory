@@ -5,32 +5,24 @@
 //  Created by 齋藤龍太 on 2025/03/09.
 //
 
+import SwiftData
 import SwiftUI
 
 struct ContentView: View {
     @State private var isShowingNoteCreateView = false
+    @State private var selectedNote: Note? = nil
+    @Query var notes: [Note]
+
     var body: some View {
         NavigationView {
             VStack {
-                List(0..<10) { index in
-                    NavigationLink(destination: NoteDetailView()) {
-                        VStack(alignment: .leading) {
-                            Text("ノートタイトル \(index)")
-                                .font(.headline)
-                            Text("これはノートのプレビューです。")
-                                .font(.subheadline)
-                                .foregroundColor(.gray)
-                                .lineLimit(2)
-                        }
-                        .padding()
-                        .background(Color.white)
-                        .cornerRadius(8)
-                        .shadow(radius: 2)
+                List(notes, id: \.id) { note in
+                    NavigationLink(destination: NoteDetailView(note: note)) {
+                        Text(note.title)
                     }
                 }
-                .listStyle(PlainListStyle())
                 .navigationTitle("BookMemory")
-                
+
                 Button(action: {
                     // ノート作成画面へ遷移
                     isShowingNoteCreateView = true
@@ -45,12 +37,19 @@ struct ContentView: View {
                 }
                 .padding(.bottom, 20)
                 .sheet(isPresented: $isShowingNoteCreateView) {
-                    NoteCreateView()
+                    NoteCreateView { newNote in
+                        // 新規ノートを親に渡すクロージャ
+                        selectedNote = newNote
+                        isShowingNoteCreateView = false
+                    }
                 }
+                
+                
             }
         }
     }
 }
+
 #Preview {
     ContentView()
 }

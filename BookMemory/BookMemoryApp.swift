@@ -14,5 +14,6 @@ struct BookMemoryApp: App {
         WindowGroup {
             ContentView()
         }
+        .modelContainer(for: Note.self)
     }
 }

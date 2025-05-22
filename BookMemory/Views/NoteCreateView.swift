@@ -10,6 +10,10 @@ import SwiftUI
 struct NoteCreateView: View {
     @State private var title = ""
     @State private var content = ""
+    @Environment(\.modelContext) private var modelContext
+    
+    // 新規ノートを親に渡すクロージャ
+    var onCreate: ((Note) -> Void)?
     
     var body: some View {
         VStack(alignment: .leading, spacing: 20) {
@@ -23,7 +27,9 @@ struct NoteCreateView: View {
                 .cornerRadius(8)
             
             Button(action: {
-                print("ノートが保存されました")
+                let newNote = Note(title: self.title, content: self.content, imageData: nil)
+                modelContext.insert(newNote)
+                try? modelContext.save()
             }) {
                 Text("保存")
                     .font(.title2)
