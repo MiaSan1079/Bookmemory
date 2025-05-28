@@ -43,8 +43,6 @@ struct ContentView: View {
                         isShowingNoteCreateView = false
                     }
                 }
-                
-                
             }
         }
     }

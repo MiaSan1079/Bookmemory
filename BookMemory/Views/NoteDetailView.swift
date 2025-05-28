@@ -24,6 +24,6 @@ struct NoteDetailView: View {
     }
 }
 
-//#Preview {
-//    NoteDetailView(note: "")
-//}
+#Preview {
+    NoteDetailView(note: Note(title: "サンプルタイトル", content: "サンプル内容", imageData: nil))
+}
