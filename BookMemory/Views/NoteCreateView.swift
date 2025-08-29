@@ -9,12 +9,9 @@ import PhotosUI
 import SwiftUI
 
 struct NoteCreateView: View {
-    @State private var title = ""
-    @State private var content = ""
+    @State private var titleAndContent = ""
     @Environment(\.modelContext) private var modelContext
-    
-    // 新規ノートを親に渡すクロージャ
-    var onCreate: ((Note) -> Void)?
+    @Environment(\.dismiss) private var dismiss
     
     // 画像選択用のプロパティ
     @State private var selectedItem: PhotosPickerItem? = nil
@@ -22,14 +19,12 @@ struct NoteCreateView: View {
     
     var body: some View {
         VStack(alignment: .leading, spacing: 20) {
-            TextField("タイトルを入力", text: $title)
-                .textFieldStyle(RoundedBorderTextFieldStyle())
-                .padding(.vertical, 10)
-            
-            TextEditor(text: $content)
-                .frame(height: 300)
+            // タイトル＋本文一体型TextEditor
+            TextEditor(text: $titleAndContent)
+                .frame(height: 450)
                 .border(Color.gray, width: 1)
                 .cornerRadius(8)
+                .padding(.vertical, 10)
             
             // 画像プレビュー
             if let imageData = selectedImageData, let uiImage = UIImage(data: imageData) {
@@ -59,10 +54,15 @@ struct NoteCreateView: View {
             }
             
             Button(action: {
+                // 1行目をタイトル、それ以降を本文として分割
+                let lines = titleAndContent.components(separatedBy: "\n")
+                let title = lines.first ?? ""
+                let content = lines.dropFirst().joined(separator: "\n")
                 let newNote = Note(title: title, content: content, imageData: selectedImageData)
                 modelContext.insert(newNote)
                 try? modelContext.save()
-                onCreate?(newNote)
+                
+                dismiss()
             }) {
                 Text("保存")
                     .font(.title2)

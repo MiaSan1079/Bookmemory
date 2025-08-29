@@ -10,7 +10,6 @@ import SwiftUI
 
 struct ContentView: View {
     @State private var isShowingNoteCreateView = false
-    @State private var selectedNote: Note? = nil
     @Query var notes: [Note]
 
     var body: some View {
@@ -37,11 +36,7 @@ struct ContentView: View {
                 }
                 .padding(.bottom, 20)
                 .sheet(isPresented: $isShowingNoteCreateView) {
-                    NoteCreateView { newNote in
-                        // 新規ノートを親に渡すクロージャ
-                        selectedNote = newNote
-                        isShowingNoteCreateView = false
-                    }
+                    NoteCreateView()
                 }
             }
         }
